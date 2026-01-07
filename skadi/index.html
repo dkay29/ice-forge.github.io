@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skadi — Ice-Forge</title>
+  <meta name="description" content="Skadi: a clean Spring Boot backend foundation for data-centric services and APIs." />
+  <meta name="theme-color" content="#0B3C5D" />
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1a2f; --text:#e8eef7; --muted:#9fb2cc; --line:rgba(255,255,255,.10);
+      --brand:#3ab0ff; --brand2:#6ee7f9;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    :root[data-theme="light"]{
+      --bg:#f7fafc; --panel:#ffffff; --text:#0b1220; --muted:#54657d; --line:rgba(2,6,23,.10);
+      --shadow: 0 18px 40px rgba(2,6,23,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:var(--sans);
+      background: radial-gradient(900px 500px at 20% 10%, rgba(58,176,255,.18), transparent 60%),
+                  radial-gradient(900px 500px at 85% 15%, rgba(110,231,249,.12), transparent 62%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 20px 64px}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:18px; padding:10px 0 26px;
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      color:var(--muted);
+    }
+    .nav a{padding:10px 12px; border-radius:12px}
+    .nav a:hover{background:rgba(58,176,255,.10); color:var(--text)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px; padding:10px 14px; border-radius:12px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      cursor:pointer; color:var(--text);
+    }
+    :root[data-theme="light"] .btn{
+      background:linear-gradient(180deg, rgba(2,6,23,.04), rgba(2,6,23,.02));
+    }
+    .btn:hover{border-color:rgba(58,176,255,.35)}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      overflow:hidden;
+      position:relative;
+    }
+    :root[data-theme="light"] .card{
+      background:linear-gradient(180deg, rgba(2,6,23,.03), rgba(2,6,23,.01));
+    }
+    .hero{
+      display:grid; grid-template-columns: 1.1fr .9fr; gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr;} }
+    .eyebrow{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:6px 10px; border:1px solid var(--line); border-radius:999px;
+      color:var(--muted);
+      font-family:var(--mono); font-size:12px;
+    }
+    h1{margin:14px 0 10px; font-size:42px; line-height:1.08; letter-spacing:-.6px}
+    @media (max-width: 520px){ h1{font-size:34px} }
+    .lead{color:var(--muted); font-size:16px; max-width:62ch}
+    .grid{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr 1fr} }
+    @media (max-width: 640px){ .grid{grid-template-columns:1fr} }
+    .tile{
+      padding:16px; border-radius:16px; border:1px solid var(--line);
+      background:rgba(0,0,0,.05);
+    }
+    :root[data-theme="light"] .tile{ background:rgba(2,6,23,.02); }
+    .tile h3{margin:0 0 6px; font-size:16px}
+    .tile p{margin:0; color:var(--muted); font-size:14px}
+    pre{
+      margin:0; padding:14px;
+      border-radius:16px; border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      overflow:auto;
+      font-family:var(--mono); font-size:13px; color:var(--text);
+    }
+    :root[data-theme="light"] pre{ background:rgba(2,6,23,.04); }
+    .logo-row{display:flex; gap:14px; align-items:center}
+    .skadi-logo{width:220px; max-width:100%; height:auto}
+    .binary{
+      margin-top:12px;
+      font-family:var(--mono); color:rgba(110,231,249,.8);
+      font-size:12px; white-space:nowrap; overflow:hidden;
+      border-top:1px dashed rgba(110,231,249,.25);
+      padding-top:10px;
+    }
+    .binary span{display:inline-block; animation:marquee 16s linear infinite;}
+    @keyframes marquee{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    footer{
+      margin-top:28px; color:var(--muted);
+      display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap;
+      border-top:1px solid var(--line); padding-top:16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="nav">
+        <a href="../">← Ice-Forge</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#features">Features</a>
+        <a href="#architecture">Architecture</a>
+      </div>
+
+      <button class="btn" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="mono">theme</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="eyebrow">
+          <span class="mono">skadi</span><span>•</span><span>spring boot</span><span>•</span><span>s3-friendly</span>
+        </div>
+
+        <div class="logo-row" style="margin-top:12px;">
+          <!-- Skadi logo (mountain + arrow + binary stream) -->
+          <svg class="skadi-logo" viewBox="0 0 520 180" role="img" aria-label="Skadi logo">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#6EE7F9"/>
+                <stop offset="1" stop-color="#3AB0FF"/>
+              </linearGradient>
+            </defs>
+            <!-- mark -->
+            <g transform="translate(110,88)">
+              <path d="M0 -56 L64 40 L-64 40 Z" fill="url(#g)" opacity=".95"/>
+              <path d="M0 -70 L0 -110" stroke="#0B3C5D" stroke-width="7" opacity=".9"/>
+              <polygon points="0,-120 12,-100 -12,-100" fill="#0B3C5D" opacity=".9"/>
+            </g>
+            <!-- wordmark -->
+            <text x="210" y="108" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+                  font-size="72" font-weight="800" fill="#0B3C5D">SKADI</text>
+            <!-- binary -->
+            <text x="210" y="144" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+                  font-size="18" fill="#3AB0FF">01010 00101 01010 11001</text>
+          </svg>
+        </div>
+
+        <h1>Clean backend foundation for data-centric services.</h1>
+        <p class="lead">
+          Skadi is a Java/Spring Boot service skeleton designed for extensibility, testability, and production posture.
+          Keep domain boundaries clear, plug in corporate integrations, and ship.
+        </p>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+          <!-- Replace these hrefs with your real repo/docs links -->
+          <a class="btn" href="#" onclick="alert('Update this link to your Skadi GitHub repo'); return false;">GitHub Repo</a>
+          <a class="btn" href="#quickstart">Get started →</a>
+          <a class="btn" href="../">Ice-Forge home</a>
+        </div>
+
+        <div class="binary" aria-hidden="true">
+          <span>01010 11001 01010 00101 01010 11001 01010 00101 01010 11001 01010 00101 01010 11001 01010 00101 </span>
+          <span>01010 11001 01010 00101 01010 11001 01010 00101 01010 11001 01010 00101 01010 11001 01010 00101 </span>
+        </div>
+      </div>
+
+      <div class="card" id="quickstart">
+        <h2 style="margin:0 0 10px;">Quickstart</h2>
+        <p style="margin:0 0 10px; color:var(--muted); font-size:14px;">
+          Copy/paste these commands to run locally.
+        </p>
+
+        <pre><code># build
+mvn -U clean verify
+
+# run
+mvn spring-boot:run
+
+# health check
+curl -s http://localhost:8080/actuator/health | jq
+</code></pre>
+
+        <div style="margin-top:12px;" class="tile">
+          <h3>Where to point links</h3>
+          <p>Update “GitHub Repo” and any doc links once you confirm the repo URL(s).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="card" style="margin-top:14px;">
+      <h2 style="margin:0 0 10px;">Features</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Layered architecture</h3>
+          <p>Controller → service → domain boundaries designed for change.</p>
+        </div>
+        <div class="tile">
+          <h3>Pluggable security</h3>
+          <p>Drop-in filters/entitlements for corporate client customization.</p>
+        </div>
+        <div class="tile">
+          <h3>S3-friendly patterns</h3>
+          <p>Built to handle large results and cloud-native storage.</p>
+        </div>
+        <div class="tile">
+          <h3>Observability-ready</h3>
+          <p>Actuator endpoints, metrics, and structured logging posture.</p>
+        </div>
+        <div class="tile">
+          <h3>Testing posture</h3>
+          <p>JUnit + Testcontainers friendly, integration tests encouraged.</p>
+        </div>
+        <div class="tile">
+          <h3>Digital-first docs</h3>
+          <p>Minimal surface area, clear configuration and extension points.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="card" style="margin-top:14px;">
+      <h2 style="margin:0 0 10px;">Architecture</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>API layer</h3>
+          <p>REST endpoints + health/metrics, ready for UI dashboards.</p>
+        </div>
+        <div class="tile">
+          <h3>Domain layer</h3>
+          <p>Keep domain logic tech-agnostic; swap infra without pain.</p>
+        </div>
+        <div class="tile">
+          <h3>Infra adapters</h3>
+          <p>JDBC, S3, auth, and integrations plug in cleanly.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> Ice-Forge • Skadi</div>
+      <div class="mono">/skadi/ — GitHub Pages</div>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const root = document.documentElement;
+      const key = "iceforge_theme";
+      const btn = document.getElementById("themeBtn");
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      function setTheme(t){
+        root.setAttribute("data-theme", t);
+        localStorage.setItem(key, t);
+      }
+      function getPreferred(){
+        const saved = localStorage.getItem(key);
+        if(saved) return saved;
+        return window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      }
+      setTheme(getPreferred());
+
+      btn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme") || "dark";
+        setTheme(current === "dark" ? "light" : "dark");
+      });
+    })();
+  </script>
+</body>
+</html>
